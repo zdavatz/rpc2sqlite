@@ -26,6 +26,7 @@ There is no test suite; verify changes with `--limit` against a scratch DB and i
 ## API facts worth remembering
 
 - `size=500` per page works (about 2 MB, under 1 s); 290 921 products → 582 pages.
-- Detail fetch is ~0.15 s each; 8 threads finish the full register in roughly 1–2 hours.
+- Detail fetch is ~0.15 s each; with 8 threads the full register took ~80 min (list ~15 min). Resulting DB is ~8.5 GB, mostly `raw_json`.
+- ~2 000 listed products (mostly ALTSTOFF, cpIds 846xxx–848xxx) return 404 `AggregateNotFoundException` on the detail endpoint; this is server-side, not a client bug. Expect `product_details` to have ~289k rows, not 291k.
 - The `/product/{cpId}/summary` endpoint returns 500 for public users; use `products/product/{cpId}`.
 - Product types seen: GEMISCH, ALTSTOFF, BIOZID, FERTILIZER; lists contain only QUALIFIED products.

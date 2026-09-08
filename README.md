@@ -67,7 +67,22 @@ The list is a Spring `Page`; paging stops when `last` is `true`.
 | `trade_names` | additional trade names |
 
 Every `products`, `product_details` and `components` row keeps the complete
-original JSON in `raw_json`.
+original JSON in `raw_json`. A full run (08.09.2026) produced an 8.5 GB
+database; most of that is `raw_json`.
+
+## Known gaps
+
+About 2 000 of the 290 921 listed products (mostly older `ALTSTOFF` entries
+with cpIds in the 846xxx–848xxx range) have no detail record on the server:
+the detail endpoint answers 404 `AggregateNotFoundException`. They remain in
+`products` with their list data but have no `product_details` row. A few
+requests fail transiently with 400/500; `rpc2sqlite --details-only` retries
+everything that is still missing.
+
+## Runtime
+
+Full run with 8 threads: about 15 minutes for the list (582 pages of 500)
+and about 80 minutes for the 290 921 detail pages.
 
 ## License
 
